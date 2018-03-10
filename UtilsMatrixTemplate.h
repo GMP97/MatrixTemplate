@@ -29,5 +29,4 @@ bool isEqual<double>(const double&left,const double&right) {
     return fabs(left - right) <= FLT_EPSILON;
 }
 
-
 #endif //MATRIXTEMPLATE_UTILSMATRIXTEMPLATE_H

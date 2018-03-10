@@ -86,7 +86,7 @@ public:
             buffer[i]+=right;
     }
 
-    MatrixTemplate &operator*(const MatrixTemplate &right) const{
+    MatrixTemplate operator*(const MatrixTemplate &right) const{
         if (columns != right.rows)
             throw std::logic_error(
                     "Il numero di colonne della prima matrice e il numero delle righe della seconda matrice non corrisponde");
@@ -134,6 +134,32 @@ public:
         if (i > rows || j > columns)
             throw std::out_of_range("Elemento fuori dal range della matrice");
         buffer[columns * (i - 1) + j - 1] = value;
+    }
+
+    MatrixTemplate selectRow(int i) {
+        if (i > rows || i<1)
+            throw std::out_of_range("Riga fuori dal range della matrice");
+        MatrixTemplate<T> tmpMatrix(1, columns);
+        for (int j = 0; j < columns; j++)
+            tmpMatrix.buffer[j] = buffer[columns * (i - 1) + j];
+        return tmpMatrix;
+    }
+
+    MatrixTemplate selectColumn(int j) {
+        if (j > rows || j<1)
+            throw std::out_of_range("Colonna fuori dal range della matrice");
+        MatrixTemplate<T> tmpMatrix(rows, 1);
+        for (int i = 0; i < rows; i++)
+            tmpMatrix.buffer[i] = buffer[j - 1 + columns * i];
+        return tmpMatrix;
+    }
+
+    int getRow() const{
+        return rows;
+    }
+
+    int getColumn() const{
+        return columns;
     }
 
 
