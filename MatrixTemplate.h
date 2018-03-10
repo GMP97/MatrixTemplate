@@ -154,11 +154,11 @@ public:
         return tmpMatrix;
     }
 
-    int getRow() const{
+    int getRows() const{
         return rows;
     }
 
-    int getColumn() const{
+    int getColumns() const{
         return columns;
     }
 
