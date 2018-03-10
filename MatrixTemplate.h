@@ -58,7 +58,7 @@ public:
         return true;
      }
 
-    bool operator!=(const MatrixTemplate& right)const {
+    bool operator!=(const MatrixTemplate& right) const {
         return !(*this==right);
     }
 
@@ -71,25 +71,72 @@ public:
         return *this;
     }
 
-    MatrixTemplate &operator+(MatrixTemplate &left, MatrixTemplate &right){
-        if(left.rows!=right.rows || left.columns!=right.columns)
+    MatrixTemplate operator+(const MatrixTemplate &right) const {
+        if (rows != right.rows || columns != right.columns)
             throw std::logic_error(
                     "Il numero delle righe e/o delle colonne non corrisponde");
-        MatrixTemplate tmp(left.rows, left.columns);
-        for(int i=0;i<rows*columns;i++)
-            tmp.buffer[i]=left.buffer + right.buffer[i];
-        return *this;
+        MatrixTemplate<T> tmpMatrix(rows, columns);
+        for (int i = 0; i < right.rows * right.columns; i++)
+            tmpMatrix.buffer[i] = buffer[i] + right.buffer[i];
+        return tmpMatrix;
     }
-    
 
-    MatrixTemplate &operator+=(T &right){
+    MatrixTemplate &operator+=(const T &right){
         for(int i=0; i<rows*columns;i++)
             buffer[i]+=right;
     }
 
-    MatrixTemplate &operator*(MatrixTemplate &right){
-
+    MatrixTemplate &operator*(const MatrixTemplate &right) const{
+        if (columns != right.rows)
+            throw std::logic_error(
+                    "Il numero di colonne della prima matrice e il numero delle righe della seconda matrice non corrisponde");
+        MatrixTemplate<T> tmpMatrix(rows, right.columns);
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < right.columns; j++) {
+                tmpMatrix.buffer[i * right.columns + j] = 0;
+                for (int h = 0; h < columns; h++)
+                    tmpMatrix.buffer[i * right.columns + j] += buffer[i * columns + h] * right.buffer[h * right.columns + j];
+            }
+        return tmpMatrix;
     }
+
+    MatrixTemplate &operator*(const T &right) const{
+        MatrixTemplate<T> tmpMatrix(rows, columns);
+        for (int i=0; i<rows*columns;i++)
+            tmpMatrix.buffer[i] = buffer[i]*right;
+    }
+
+    MatrixTemplate transpose() const {
+        MatrixTemplate<T> tmpMatrix(columns, rows);
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                tmpMatrix.buffer[tmpMatrix.columns * j + i] = buffer[columns * i + j];
+        return tmpMatrix;
+    }
+
+    void print() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                std::cout << buffer[columns * (i) + j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+
+    T getValue(int i, int j) const {
+        if (i > rows|| i<1 || j<1  || j > columns)
+            throw std::out_of_range("Elemento fuori dal range della matrice");
+        return buffer[columns * (i - 1) + j - 1];
+    }
+
+    void setValue(int i, int j, const T &value) const {
+        if (i > rows || j > columns)
+            throw std::out_of_range("Elemento fuori dal range della matrice");
+        buffer[columns * (i - 1) + j - 1] = value;
+    }
+
+
 private:
     int rows, columns;
     T *buffer;
