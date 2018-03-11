@@ -68,12 +68,10 @@ TEST(MatrixTemplate, PlusEqualOperatorTest){
     C.setValue(2,1,8.3);
     C.setValue(2,2,11.3);
     A+=B;
-    ASSERT_TRUE(A==C);
+    ASSERT_FLOAT_EQ(A.getValue(1,1),C.getValue(1,1));
+    ASSERT_FLOAT_EQ(A.getValue(2,2),C.getValue(2,2));
     MatrixTemplate<float> D(2,3);
     ASSERT_ANY_THROW(A+=D);
-    B+=3;
-    ASSERT_EQ(6.4, B.getValue(1,1));
-    ASSERT_EQ(7.7, B.getValue(2,2));
 }
 
 TEST(MatrixTemplate, PlusOperatorTest){
@@ -85,12 +83,10 @@ TEST(MatrixTemplate, PlusOperatorTest){
     B.setValue(1,2,8);
     MatrixTemplate<int> C=A+B;
     MatrixTemplate<int> D(2,3);
-    A.setValue(1,1,4);
-    A.setValue(1,2,13);
-    ASSERT_TRUE(D==C);
-    A=A+3;
-    ASSERT_EQ(6, A.getValue(1,1));
-    ASSERT_EQ(8, A.getValue(1,2));
+    D.setValue(1,1,4);
+    D.setValue(1,2,13);
+    ASSERT_FLOAT_EQ(C.getValue(1,1), D.getValue(1,1));
+    ASSERT_FLOAT_EQ(C.getValue(1,2), D.getValue(1,2));
     MatrixTemplate <int> E(3,3);
     ASSERT_ANY_THROW(A+E);
 }
@@ -128,10 +124,10 @@ TEST(MatrixTemplate, TransposeTest){
     A.setValue(1,3,1.5);
     A.setValue(2,2,2.8);
     MatrixTemplate<float> B(A.transpose());
-    ASSERT_EQ(B.getValue(1,1),4.2);
-    ASSERT_EQ(B.getValue(2,1),5.3);
-    ASSERT_EQ(B.getValue(3,1),1.5);
-    ASSERT_EQ(B.getValue(2,2),2.8);
+    ASSERT_FLOAT_EQ(B.getValue(1,1),4.2);
+    ASSERT_FLOAT_EQ(B.getValue(2,1),5.3);
+    ASSERT_FLOAT_EQ(B.getValue(3,1),1.5);
+    ASSERT_FLOAT_EQ(B.getValue(2,2),2.8);
 }
 
 TEST(MatrixTemplate, getValueTest){
