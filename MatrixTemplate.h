@@ -84,6 +84,14 @@ public:
     MatrixTemplate &operator+=(const T &right){
         for(int i=0; i<rows*columns;i++)
             buffer[i]+=right;
+        return *this;
+    }
+
+    MatrixTemplate &operator+(const T &right){
+        MatrixTemplate<T> tmpMatrix(rows, columns);
+        for (int i = 0; i < rows * columns; i++)
+            tmpMatrix.buffer[i] = buffer[i] + right;
+        return tmpMatrix;
     }
 
     MatrixTemplate operator*(const MatrixTemplate &right) const{
