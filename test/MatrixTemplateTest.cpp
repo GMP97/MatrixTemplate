@@ -28,7 +28,9 @@ TEST(MatrixTemplate, EqualOperatorTest){
     A.setValue(1,2,2);
     A.setValue(2,2,5);
     MatrixTemplate<int> B=A;
-    ASSERT_TRUE(A==B);
+    ASSERT_EQ(B.getValue(1,1), 3);
+    ASSERT_EQ(B.getValue(1,2), 2);
+    ASSERT_EQ(B.getValue(2,2), 5);
 }
 
 TEST(MatrixTemplate, EqualTest){
