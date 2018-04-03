@@ -8,11 +8,8 @@
 
 #include <cmath>
 #include <cfloat>
-#include "MatrixTemplate.h"
 
-template <typename T>
 
-class MatrixTemplate;
 
 template<typename T>
 bool isEqual(const T&left, const T&right) {
