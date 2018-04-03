@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include "../MatrixTemplate.h"
 
-TEST(MatrixTemplate, DefaultConstructorTest) {
+TEST(MatrixTemplate, ConstructorTest) {
     MatrixTemplate<int> A(3,5);
     ASSERT_EQ(3, A.getRows());
     ASSERT_EQ(5, A.getColumns());
@@ -71,7 +71,7 @@ TEST(MatrixTemplate, PlusEqualOperatorTest){
     ASSERT_FLOAT_EQ(A.getValue(1,1),C.getValue(1,1));
     ASSERT_FLOAT_EQ(A.getValue(2,2),C.getValue(2,2));
     MatrixTemplate<float> D(2,3);
-    ASSERT_ANY_THROW(A+=D);
+    ASSERT_THROW(A+=D,std::logic_error);
 }
 
 TEST(MatrixTemplate, PlusOperatorTest){
@@ -88,7 +88,7 @@ TEST(MatrixTemplate, PlusOperatorTest){
     ASSERT_FLOAT_EQ(C.getValue(1,1), D.getValue(1,1));
     ASSERT_FLOAT_EQ(C.getValue(1,2), D.getValue(1,2));
     MatrixTemplate <int> E(3,3);
-    ASSERT_ANY_THROW(A+E);
+    ASSERT_THROW(A+E, std::logic_error);
 }
 
 TEST(MatrixTemplate, MulOperator){
@@ -98,7 +98,7 @@ TEST(MatrixTemplate, MulOperator){
     A.setValue(1,3,1);
     A.setValue(2,2,2);
     MatrixTemplate<int> B(2,3);
-    ASSERT_ANY_THROW(A*B);
+    ASSERT_THROW(A*B, std::logic_error);
     MatrixTemplate<int> C(3,2);
     C.setValue(1,1,2);
     C.setValue(1,2,1);
@@ -137,7 +137,7 @@ TEST(MatrixTemplate, getValueTest){
     A.setValue(2,1,1);
     A.setValue(2,2,10);
     ASSERT_EQ(A.getValue(2,1),1);
-    ASSERT_ANY_THROW(A.getValue(3,1));
+    ASSERT_THROW(A.getValue(3,1), std::out_of_range);
 }
 
 TEST(MatrixTemplate, setValueTest) {
@@ -146,7 +146,7 @@ TEST(MatrixTemplate, setValueTest) {
     A.setValue(1, 2, 3);
     A.setValue(2, 1, 1);
     A.setValue(2, 2, 10);
-    ASSERT_ANY_THROW(A.setValue(2,3,1));
+    ASSERT_THROW(A.setValue(2,3,1),std::out_of_range);
 }
 
 TEST(MatrixTemplate, SelectRowTest){
